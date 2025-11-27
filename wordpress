@@ -1,1 +1,29 @@
 
+services:
+  wordpress:
+    image: wordpress: latest
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db
+    networks:
+      - wordpress_network
+
+  db:
+    image: mariadb: 10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+      MYSQL_DATABASE: wordpress
+    networks:
+      - wordpress_network
+
+networks:
+  wordpress_network:
+    driver: bridge
